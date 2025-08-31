@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { userQueryPagerOptions } from '~/api'
+import { userQueryPagerOptions } from '~/renderer/api'
 import { queryClient } from '~/store'
 
 export const Route = createFileRoute('/user/pager')({

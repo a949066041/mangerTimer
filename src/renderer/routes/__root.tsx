@@ -1,13 +1,13 @@
 import type { QueryClient } from '@tanstack/react-query'
-import type { LoginRes } from '~/api'
+import type { LoginRes } from '~/renderer/api'
 import { TanstackDevtools } from '@tanstack/react-devtools'
 import { useIsFetching } from '@tanstack/react-query'
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { createRootRouteWithContext, Link, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/router-devtools'
 import classix from 'classix'
-import { userMeQueryOptions } from '~/api'
-import { ThemeProvider, Themes, useTheme } from '~/components'
+import { userMeQueryOptions } from '~/renderer/api'
+import { ThemeProvider, Themes, useTheme } from '~/renderer/components'
 import appConfig from '~/utils/app.config'
 
 function ThemeMode() {

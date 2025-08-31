@@ -18,5 +18,5 @@
     "isolatedModules": true,
     "skipLibCheck": true
   },
-  "include": ["src", "rsbuild.config.ts", "scripts", "custom.json"]
+  "include": ["src", "rsbuild.config.ts", "scripts", "custom.json", "src/preload/index.d.ts"]
 }

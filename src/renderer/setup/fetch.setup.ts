@@ -1,4 +1,4 @@
-import { patchFetch } from '~/api/fetch/patch'
+import { patchFetch } from '~/renderer/api/fetch/patch'
 import { useAuthStore, useCacheStore } from '~/store'
 
 function fetchAuthIntercept(req: RequestInit) {

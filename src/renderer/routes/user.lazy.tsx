@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, Link, Outlet } from '@tanstack/react-router'
-import { userQueryListOptions } from '~/api'
+import { userQueryListOptions } from '~/renderer/api'
 
 export const Route = createLazyFileRoute('/user')({
   component: RouteComponent,

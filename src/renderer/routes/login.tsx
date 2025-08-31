@@ -1,4 +1,4 @@
-import type { ILoginUserParams } from '~/api'
+import type { ILoginUserParams } from '~/renderer/api'
 import { useMutation } from '@tanstack/react-query'
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
 import { z } from 'zod'

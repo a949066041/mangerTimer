@@ -1,8 +1,8 @@
-import type { ILoginUserParams, LoginRes } from '~/api'
+import type { ILoginUserParams, LoginRes } from '~/renderer/api'
 import { omit } from 'lodash-es'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { loginUser, userMeQueryOptions } from '~/api'
+import { loginUser, userMeQueryOptions } from '~/renderer/api'
 import { queryClient } from '.'
 import { useCacheStore } from './cache.store'
 

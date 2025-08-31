@@ -1,6 +1,6 @@
 import type { ILoginUserParams, IUserEntity, IUserList, LoginRes } from './user.type'
 import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query'
-import { fetchClient } from '~/api/fetch'
+import { fetchClient } from '~/renderer/api/fetch'
 import { delay } from '~/utils'
 
 const baseUrl = '/users'
