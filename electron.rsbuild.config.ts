@@ -1,20 +1,23 @@
 import { resolve } from 'node:path'
-import { mainPlugin } from '@electron-rsbuild/plugin-main'
-import { preloadPlugin } from '@electron-rsbuild/plugin-preload'
 
-import { rendererPlugin } from '@electron-rsbuild/plugin-renderer'
 import { defineConfig } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 
+// @ts-expect-error error
 import { tanstackRouter } from '@tanstack/router-plugin/rspack'
-import { version } from './package.json' with { type: 'json' }
 
 const APP_TITLE = 'template rs'
 
 export default defineConfig({
   root: resolve(__dirname, '.'),
+
   environments: {
     main: {
+      output: {
+        externals: {
+          knex: 'commonjs knex',
+        },
+      },
     },
     preload: {
     },
@@ -25,7 +28,6 @@ export default defineConfig({
       resolve: {
         alias: {
           APP_TITLE: JSON.stringify(APP_TITLE),
-          APP_VERSION: JSON.stringify(version),
         },
       },
       plugins: [pluginReact()],

@@ -1,6 +1,8 @@
 onlyBuiltDependencies:
   - '@tailwindcss/oxide'
+  - better-sqlite3
   - core-js
   - electron
   - electron-winstaller
   - esbuild
+  - sqlite3

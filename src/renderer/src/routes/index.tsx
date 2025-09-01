@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
-import * as React from 'react'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -7,10 +6,8 @@ export const Route = createFileRoute('/')({
 
 function RouteComponent() {
   return (
-    <div className=" btn">
-      home page
-      <i className="icon-[custom--anq]"></i>
-      <span className="icon-[material-symbols--10k-outline]"></span>
+    <div className=" px-2 py-4">
+      <div>123</div>
     </div>
   )
 }
