@@ -1,12 +1,12 @@
-import type { ZodTypeAny } from 'zod'
+import type { ZodAny } from 'zod'
 
 type RequestParams = Record<string, any>
 type RequestBody = Record<string, any>
 
 export const fetchClient = {
-  async get<T>(url: string, params: (RequestParams | ZodTypeAny) = {}, schema?: ZodTypeAny) {
+  async get<T>(url: string, params: (RequestParams | ZodAny) = {}, schema?: ZodAny) {
     if (typeof params.safeParse === 'function') {
-      schema = params as ZodTypeAny
+      schema = params as ZodAny
       params = {}
     }
 
@@ -27,7 +27,7 @@ export const fetchClient = {
 
     return response
   },
-  async post<T>(url: string, body: RequestBody = {}, schema?: ZodTypeAny) {
+  async post<T>(url: string, body: RequestBody = {}, schema?: ZodAny) {
     const res = await fetch(url, {
       method: 'post',
       headers: {
@@ -47,9 +47,9 @@ export const fetchClient = {
 
     return response
   },
-  async delete<T>(url: string, params: (RequestParams | ZodTypeAny) = {}, schema?: ZodTypeAny) {
+  async delete<T>(url: string, params: (RequestParams | ZodAny) = {}, schema?: ZodAny) {
     if (typeof params.safeParse === 'function') {
-      schema = params as ZodTypeAny
+      schema = params as ZodAny
       params = {}
     }
 

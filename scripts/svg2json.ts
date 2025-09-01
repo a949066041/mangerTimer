@@ -61,7 +61,7 @@ import {
   // Export as IconifyJSON
   const exported = `${JSON.stringify(iconSet.export(), null, '\t')}\n`
 
-  const buildDist = `src/renderer/assets/${iconSet.prefix}.json`
+  const buildDist = `src/renderer/src/assets/${iconSet.prefix}.json`
   // Save to file
   await fs.writeFile(buildDist, exported, 'utf8')
   console.log(`build ${prefix} icon success to ${buildDist}!`)
