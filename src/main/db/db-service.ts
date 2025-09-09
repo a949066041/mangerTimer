@@ -76,7 +76,6 @@ export class TimerService {
       title: '对话框窗口的标题',
       buttonLabel: '选择',
       properties: ['showHiddenFiles'],
-      message: 'mac文件选择器title',
     })
 
     const filePath = first(value)
@@ -87,7 +86,8 @@ export class TimerService {
     const savePath = join(appDir, TIMER_PLAN_DIR)
     if (!existsSync(savePath))
       mkdirSync(savePath, { recursive: true })
-    const newFlePath = join(savePath, newFileName)
+    const ext = filePath.split('.').pop()
+    const newFlePath = join(savePath, `${newFileName}.${ext}`)
     await copyFileSync(filePath, newFlePath)
     return newFlePath
   }
