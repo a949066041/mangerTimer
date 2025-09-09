@@ -1,8 +1,9 @@
+import type { TimerService } from './db/db-service'
 import { join } from 'node:path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
-import { LocalDB } from './db/db'
-import { TimerPlanService } from './db/service'
+import { timerService } from './db/db-service'
+import { timerSchedule } from './schedule'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -49,27 +50,11 @@ app.whenReady().then(() => {
     event.reply('pong', { message: 'copy that.', time: new Date().getTime() })
   })
 
-  const localDB = new LocalDB()
-  localDB.init()
-  const service = new TimerPlanService(localDB)
-
-  ipcMain.handle('selectAll', async () => {
-    return await service.getAll()
-  })
-
-  ipcMain.handle('create', async (_, data) => {
-    return await service.create(data)
-  })
-
-  ipcMain.handle('update', async (_, data) => {
-    return await service.update(data)
-  })
-
-  ipcMain.handle('delete', async (_, id) => {
-    return await service.delete(id)
-  })
-
   createWindow()
+  timerSchedule.initAllTimer()
+  ipcMain.handle('bridge', async (_event, method: keyof TimerService, params?: any) => {
+    return timerService[method](params) as Promise<unknown>
+  })
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0)

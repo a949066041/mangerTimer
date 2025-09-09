@@ -1,5 +1,6 @@
 import type { Knex } from 'knex'
 import { join } from 'node:path'
+import consola from 'consola'
 import { app } from 'electron'
 import knex from 'knex'
 
@@ -24,8 +25,8 @@ export class LocalDB {
         filename: join(app.getPath('userData'), 'timerManger.db'),
       },
     })
-    console.log(
-      `db path:${join(app.getPath('userData'), 'timerManger.db')}`,
+    consola.success(
+      `db path create success:${join(app.getPath('userData'), 'timerManger.db')}`,
     )
     // 新建表
     await this.sync()

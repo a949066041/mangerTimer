@@ -1,8 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
 
-export * from './cache.store'
-export * from './count.store'
-
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

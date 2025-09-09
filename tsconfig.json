@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "esnext",
     "jsx": "preserve",
     "lib": ["DOM", "ESNext"],
     "useDefineForClassFields": true,
@@ -18,10 +18,5 @@
     "isolatedModules": true,
     "skipLibCheck": true
   },
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ],
   "include": ["src", "rsbuild.config.ts", "scripts", "custom.json", "src/preload/index.d.ts", "src/renderer/src/env.d.ts"]
 }

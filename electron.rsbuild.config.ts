@@ -1,9 +1,7 @@
 import { resolve } from 'node:path'
-
 import { defineConfig } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 
-// @ts-expect-error error
 import { tanstackRouter } from '@tanstack/router-plugin/rspack'
 
 const APP_TITLE = 'template rs'
@@ -18,6 +16,11 @@ export default defineConfig({
           knex: 'commonjs knex',
         },
       },
+      source: {
+        decorators: {
+          version: 'legacy',
+        },
+      },
     },
     preload: {
     },
@@ -30,8 +33,23 @@ export default defineConfig({
           APP_TITLE: JSON.stringify(APP_TITLE),
         },
       },
-      plugins: [pluginReact()],
+      plugins: [
+        pluginReact(),
+      ],
       tools: {
+        swc: {
+          jsc: {
+            parser: {
+              syntax: 'typescript', // 支持 TS/JSX
+              tsx: true, // 如果使用 TSX
+              decorators: true, // 启用装饰器解析（默认 false）
+            },
+            transform: {
+              decoratorMetadata: true, // 启用元数据支持（用于 reflect-metadata 等库）
+              decoratorVersion: '2022-03', // 转换时指定版本，与解析一致
+            },
+          },
+        },
         rspack: {
           plugins: [
             tanstackRouter({
