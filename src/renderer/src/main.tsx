@@ -5,6 +5,7 @@ import ReactDOM, { createRoot } from 'react-dom/client'
 import { scan } from 'react-scan'
 import App from './App'
 import { queryClient } from './store'
+import 'react-js-cron/dist/styles.css'
 import '@ant-design/v5-patch-for-react-19'
 
 import './setup'

@@ -1,88 +1,20 @@
-import type { ColumnsType } from 'antd/es/table'
+import type { TableProps } from 'antd'
 import type { TimerPlanModel } from '~~/src/main/db/db'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
 import { Button, Form, Input, Modal, Space, Switch, Table } from 'antd'
-import { cloneDeep } from 'lodash-es'
-import { useMemo, useState } from 'react'
-import { useToggle } from 'usehooks-ts'
-import { createTimer, deleteTimer, findTimerList, saveData, startSchedule, updateTimer } from '~/api/ipc'
-import { queryClient } from '~/store'
+import { useMemo } from 'react'
+import { Cron } from 'react-js-cron'
+import { startSchedule } from '~/api/ipc'
+import { DEFAULT_LOCALE_ZH } from '~/assets/cron.locale'
+import { useRecord } from './-timer/useRecord'
+import { useTimerForm } from './-timer/useTimerForm'
+import { useTimerTable } from './-timer/useTimerTable'
 
-export const Route = createFileRoute('/')({
-  component: RouteComponent,
-})
-
-function useTimerForm() {
-  const [form] = Form.useForm()
-  const [isOpen, _, setOpen] = useToggle(false)
-  const [id, setId] = useState<number>()
-
-  const { mutate: saveAction, isPending } = useMutation({
-    mutationFn: (data: TimerPlanModel) => {
-      return id ? updateTimer({ ...data, id }) : createTimer(data)
-    },
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['selectAll'] })
-      setOpen(false)
-    },
-  })
-
-  function handleSaveForm() {
-    form.validateFields().then((values: TimerPlanModel) => {
-      saveAction(values)
-    })
-  }
-
-  function handleOpenDialog(row?: TimerPlanModel) {
-    setOpen(true)
-    if (row) {
-      form.setFieldsValue(cloneDeep(row))
-    }
-    else {
-      form.setFieldsValue({})
-    }
-    setId(row?.id)
-  }
-
-  function handleCloseDialog() {
-    setOpen(false)
-  }
-
-  async function selectFile() {
-    const data = await saveData()
-    if (data) {
-      form.setFieldValue('file', data)
-    }
-  }
-
-  return {
-    isOpen,
-    form,
-    isPending,
-    selectFile,
-    handleSaveForm,
-    handleOpenDialog,
-    handleCloseDialog,
-  }
-}
-
-function RouteComponent() {
-  const { data = [], isLoading, refetch } = useQuery({
-    queryKey: ['selectAll'],
-    queryFn: findTimerList,
-  })
-
+export function TimerComponents() {
   const { isOpen, form, isPending, selectFile, handleSaveForm, handleOpenDialog, handleCloseDialog } = useTimerForm()
+  const { data: recordData, isOpen: recordIsOpen, handleOpenRecord, handleCloseRecord } = useRecord()
+  const { loadingTable, handleSwitch, handleDelete, data, refetch } = useTimerTable()
 
-  const { mutate: deleteAction, isPending: isDeletePending } = useMutation({
-    mutationFn: (params: TimerPlanModel) => deleteTimer(params.id),
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['selectAll'] })
-    },
-  })
-
-  const columns: ColumnsType<TimerPlanModel> = useMemo(() => [
+  const columns: TableProps<TimerPlanModel>['columns'] = useMemo(() => [
     {
       title: '名称',
       dataIndex: 'name',
@@ -103,7 +35,14 @@ function RouteComponent() {
       title: '状态',
       dataIndex: 'open',
       key: 'open',
-      render: open => (open ? '开启' : '关闭'),
+      render: (open, row) => (
+        <Switch
+          checked={open}
+          onChange={async () => {
+            handleSwitch(row)
+          }}
+        />
+      ),
     },
     {
       title: '创建时间',
@@ -119,25 +58,27 @@ function RouteComponent() {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
+      fixed: 'right',
       render(_, row) {
         return (
           <Space size="middle">
             <a type="link" onClick={() => handleOpenDialog(row)}>编辑</a>
-            <a type="link" onClick={() => deleteAction(row)}>删除</a>
+            <a type="link" onClick={() => handleOpenRecord(row.id)}>记录列表</a>
+            <a type="link" onClick={() => handleDelete(row)}>删除</a>
           </Space>
         )
       },
     },
-  ], [deleteAction, handleOpenDialog])
+  ], [handleDelete, handleOpenDialog, handleSwitch, handleOpenRecord])
 
   return (
-    <div className=" px-2 py-4">
+    <div className=" space-y-2 px-2 py-4">
       <Space>
         <Button type="primary" onClick={() => handleOpenDialog()}>新增</Button>
         <Button type="primary" onClick={() => refetch()}>刷新</Button>
         <Button type="primary" onClick={() => startSchedule()}>任务重置刷新</Button>
       </Space>
-      <Modal title="定时器" open={isOpen} onOk={handleSaveForm} confirmLoading={isPending} onCancel={handleCloseDialog}>
+      <Modal width={800} centered title="定时器" open={isOpen} onOk={handleSaveForm} confirmLoading={isPending} onCancel={handleCloseDialog}>
         <Form
           form={form}
           labelCol={{ span: 4 }}
@@ -147,27 +88,34 @@ function RouteComponent() {
           <Form.Item label="名称" name="name" rules={[{ required: true, message: '请输入名称' }]}>
             <Input placeholder="请输入名称" />
           </Form.Item>
-          <Form.Item label="文件路径" name="file" rules={[{ required: true, message: '请输入文件路径' }]}>
-            {
-              (form.getFieldValue('file')
-                ? (
-                    <Space>
-                      <Input placeholder="请输入文件路径" value={form.getFieldValue('file')} />
-                      <Button type="primary" onClick={selectFile}>选择文件</Button>
-                    </Space>
-                  )
-                : null)
-            }
+          <Form.Item label="文件路径" required>
+            <Space>
+              <Form.Item name="file" rules={[{ required: true, message: '请选择文件' }]} noStyle><Input disabled /></Form.Item>
+              <Button type="primary" onClick={selectFile}>选择文件</Button>
+            </Space>
           </Form.Item>
           <Form.Item label="定时器" name="timer" rules={[{ required: true, message: '请输入定时器' }]}>
-            <Input placeholder="请输入定时器" />
+            <Cron locale={DEFAULT_LOCALE_ZH} value={form.getFieldValue('timer')} setValue={(val: any) => form.setFieldValue('timer', val)} />
           </Form.Item>
           <Form.Item label="状态" name="open">
             <Switch />
           </Form.Item>
         </Form>
       </Modal>
-      <Table<TimerPlanModel> rowKey="id" pagination={false} columns={columns} loading={isLoading || isDeletePending} dataSource={data} />
+      <Modal title="执行记录" centered footer={null} open={recordIsOpen} onCancel={handleCloseRecord}>
+        <Table
+          rowKey="id"
+          columns={[
+            {
+              title: '执行时间',
+              dataIndex: 'execTimer',
+              key: 'execTimer',
+            },
+          ]}
+          dataSource={recordData}
+        />
+      </Modal>
+      <Table<TimerPlanModel> rowKey="id" pagination={false} columns={columns} loading={loadingTable} dataSource={data} />
     </div>
   )
 }

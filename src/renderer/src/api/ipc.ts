@@ -1,4 +1,4 @@
-import type { TimerPlanModel } from '~~/src/main/db/db'
+import type { TimerPlanModel, TimerRecord } from '~~/src/main/db/db'
 import type { TimerService } from '~~/src/main/db/db-service'
 
 const ipcFn = window.electron.ipcRenderer.invoke
@@ -56,5 +56,19 @@ export function saveData() {
 export function startSchedule() {
   return ipcFetch<number>(
     'resetTimer',
+  )
+}
+
+export function switchOpen(id: number) {
+  return ipcFetch<number>(
+    'switchOpen',
+    id,
+  )
+}
+
+export function getRecord(id: number) {
+  return ipcFetch<TimerRecord[]>(
+    'getRecord',
+    id,
   )
 }

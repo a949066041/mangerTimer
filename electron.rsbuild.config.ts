@@ -2,8 +2,6 @@ import { resolve } from 'node:path'
 import { defineConfig } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 
-import { tanstackRouter } from '@tanstack/router-plugin/rspack'
-
 const APP_TITLE = 'template rs'
 
 export default defineConfig({
@@ -49,16 +47,6 @@ export default defineConfig({
               decoratorVersion: '2022-03', // 转换时指定版本，与解析一致
             },
           },
-        },
-        rspack: {
-          plugins: [
-            tanstackRouter({
-              routesDirectory: './src/renderer/src/routes',
-              generatedRouteTree: './src/renderer/src/routeTree.gen.ts',
-              target: 'react',
-              autoCodeSplitting: true,
-            }),
-          ],
         },
       },
     },

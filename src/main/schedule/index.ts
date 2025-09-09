@@ -1,6 +1,7 @@
 import type { Job } from 'node-schedule'
 import type { TimerPlanModel } from '../db/db'
 import consola from 'consola'
+import dayjs from 'dayjs'
 import schedule from 'node-schedule'
 import soundPlay from 'sound-play'
 import { timerService } from '../db/db-service'
@@ -31,6 +32,10 @@ export class TimerSchedule {
     consola.success(`start timer ${timer.id}`, timer)
     const newJob = schedule.scheduleJob(timer.timer, () => {
       consola.info(`exec timer ${timer.id}`)
+      timerService.createRecord({
+        execTimer: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        parentId: timer.id,
+      })
       soundPlay.play(timer.file)
     })
     this.schedule.set(timer.id, newJob)
