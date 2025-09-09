@@ -15,11 +15,10 @@ export class TimerService {
 
   constructor() {
     this.localDB = new LocalDB()
-    this.init()
   }
 
-  init() {
-    this.localDB.init()
+  async init() {
+    await this.localDB.init()
   }
 
   getAppVersion(): string {

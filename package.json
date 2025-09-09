@@ -1,5 +1,5 @@
 {
-  "name": "定时播放",
+  "name": "timer",
   "type": "commonjs",
   "version": "1.0.0",
   "private": true,
@@ -8,6 +8,7 @@
     "dev": "electron-rsbuild dev",
     "build": "electron-rsbuild build",
     "build:win": "electron-rsbuild build && electron-builder --win",
+    "build:mac": "electron-rsbuild build && electron-builder --mac",
     "preview": "rsbuild preview",
     "postinstall": "esno scripts/svg2json.ts",
     "lint": "eslint .",

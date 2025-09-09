@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { timerService } from './db/db-service'
+
 import { timerSchedule } from './schedule'
 
 function createWindow(): void {
@@ -13,14 +14,12 @@ function createWindow(): void {
     autoHideMenuBar: true,
     title: '定时播报',
     webPreferences: {
-      devTools: true,
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
     },
   })
   mainWindow.on('ready-to-show', () => {
     mainWindow.title = '定时播报'
-    mainWindow.webContents.openDevTools()
     mainWindow.show()
   })
 
@@ -38,7 +37,7 @@ function createWindow(): void {
 }
 
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   electronApp.setAppUserModelId('com.electron')
 
   app.on('browser-window-created', (_, window) => {
@@ -51,6 +50,7 @@ app.whenReady().then(() => {
   })
 
   createWindow()
+  await timerService.init()
   timerSchedule.initAllTimer()
   ipcMain.handle('bridge', async (_event, method: keyof TimerService, params?: any) => {
     return timerService[method](params) as Promise<unknown>
