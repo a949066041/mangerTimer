@@ -1,10 +1,10 @@
-import type { TimerPlanModel } from '~~/src/main/db/db'
+import type { TimerPlanModel } from '~/main/types'
 import { useMutation } from '@tanstack/react-query'
 import { Form } from 'antd'
 import { cloneDeep } from 'lodash-es'
 import { useState } from 'react'
 import { useToggle } from 'usehooks-ts'
-import { createTimer, saveData, updateTimer } from '~/api'
+import { createTimer, saveFile, updateTimer } from '~/api'
 import { queryClient } from '~/store'
 
 export function useTimerForm() {
@@ -44,7 +44,7 @@ export function useTimerForm() {
   }
 
   async function selectFile() {
-    const data = await saveData()
+    const data = await saveFile()
     if (data) {
       form.setFieldValue('file', data)
     }

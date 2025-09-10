@@ -1,4 +1,4 @@
-import type { TimerPlanModel } from '~~/src/main/db/db'
+import type { TimerPlanModel } from '~/main/types'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { App } from 'antd'
 import { useCallback, useMemo } from 'react'
