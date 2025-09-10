@@ -8,7 +8,6 @@ import { queryClient } from './store'
 import 'react-js-cron/dist/styles.css'
 import '@ant-design/v5-patch-for-react-19'
 
-import './setup'
 import './style/index.css'
 
 if (typeof window !== 'undefined') {
