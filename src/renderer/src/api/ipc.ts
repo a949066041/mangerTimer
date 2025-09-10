@@ -1,42 +1,35 @@
-import type { TimerPlanModel, TimerRecord } from '~~/src/main/db/db'
-import type { TimerService } from '~~/src/main/db/db-service'
+import type AppController from '~/main/controller/index.controller'
+import type { TimerPlanModel, TimerRecord } from '~/main/types'
 
 const ipcFn = window.electron.ipcRenderer.invoke
 
-function ipcFetch<T>(methods: keyof TimerService, params?: unknown) {
+function ipcFetch<T>(methods: keyof AppController, params?: unknown) {
   return ipcFn('bridge', methods, params) as Promise<T>
 }
 
 export function findTimerList() {
   return ipcFetch<TimerPlanModel[]>(
-    'getAll',
+    'getTimerList',
   )
 }
 
-export function createTimer(data: Parameters<TimerService['create']>[0]) {
+export function createTimer(data: Parameters<AppController['createTimer']>[0]) {
   return ipcFetch<number>(
-    'create',
+    'createTimer',
     data,
   )
 }
 
-export function updateTimer(data: Parameters<TimerService['update']>[0]) {
+export function updateTimer(data: Parameters<AppController['updateTimer']>[0]) {
   return ipcFetch<number>(
-    'update',
+    'updateTimer',
     data,
   )
 }
 
-export function findTimer(id: TimerPlanModel['id']) {
-  return ipcFetch<TimerPlanModel>(
-    'get',
-    id,
-  )
-}
-
-export function deleteTimer(id: number) {
+export function deleteTimer(id: Parameters<AppController['deleteTimer']>[0]) {
   return ipcFetch<number>(
-    'delete',
+    'deleteTimer',
     id,
   )
 }
@@ -47,9 +40,9 @@ export function getAppVersion() {
   )
 }
 
-export function saveData() {
+export function saveFile() {
   return ipcFetch<string>(
-    'saveData',
+    'saveFile',
   )
 }
 
@@ -68,7 +61,7 @@ export function switchOpen(id: number) {
 
 export function getRecord(id: number) {
   return ipcFetch<TimerRecord[]>(
-    'getRecord',
+    'getRecordList',
     id,
   )
 }

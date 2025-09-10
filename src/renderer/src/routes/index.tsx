@@ -1,5 +1,5 @@
 import type { TableProps } from 'antd'
-import type { TimerPlanModel } from '~~/src/main/db/db'
+import type { TimerPlanModel, TimerRecord } from '~/main/types'
 import { Button, Form, Input, Modal, Space, Switch, Table } from 'antd'
 import { useMemo } from 'react'
 import { Cron } from 'react-js-cron'
@@ -103,7 +103,7 @@ export function TimerComponents() {
         </Form>
       </Modal>
       <Modal title="执行记录" centered footer={null} open={recordIsOpen} onCancel={handleCloseRecord}>
-        <Table
+        <Table<TimerRecord>
           rowKey="id"
           columns={[
             {

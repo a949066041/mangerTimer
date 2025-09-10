@@ -29,6 +29,9 @@ importers:
       '@rsbuild/plugin-react':
         specifier: ^1.4.0
         version: 1.4.0(@rsbuild/core@1.5.4)
+      '@types/auto-launch':
+        specifier: ^5.0.5
+        version: 5.0.5
       '@types/node-schedule':
         specifier: ^2.1.8
         version: 2.1.8
@@ -38,6 +41,9 @@ importers:
       antd:
         specifier: ^5.27.3
         version: 5.27.3(luxon@3.7.2)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      auto-launch:
+        specifier: ^5.0.6
+        version: 5.0.6
       consola:
         specifier: ^3.4.2
         version: 3.4.2
@@ -53,6 +59,9 @@ importers:
       sound-play:
         specifier: ^1.1.0
         version: 1.1.0
+      sqlite3:
+        specifier: ^5.1.7
+        version: 5.1.7
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -162,9 +171,6 @@ importers:
       react-scan:
         specifier: ^0.4.3
         version: 0.4.3(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      sqlite3:
-        specifier: ^5.1.7
-        version: 5.1.7
       tailwindcss:
         specifier: ^4.1.13
         version: 4.1.13
@@ -1473,6 +1479,9 @@ packages:
   '@tybys/wasm-util@0.10.0':
     resolution: {integrity: sha512-VyyPYFlOMNylG45GoAe0xDoLwWuowvf92F9kySqzYh8vmYm7D2u4iUJKa1tOUpS70Ku13ASrOkS4ScXFsTaCNQ==}
 
+  '@types/auto-launch@5.0.5':
+    resolution: {integrity: sha512-/nGvQZSzM/pvCMCh4Gt2kIeiUmOP/cKGJbjlInI+A+5MoV/7XmT56DJ6EU8bqc3+ItxEe4UC2GVspmPzcCc8cg==}
+
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
 
@@ -1719,6 +1728,9 @@ packages:
       dmg-builder: 26.0.12
       electron-builder-squirrel-windows: 26.0.12
 
+  applescript@1.0.0:
+    resolution: {integrity: sha512-yvtNHdWvtbYEiIazXAdp/NY+BBb65/DAseqlNiJQjOx9DynuzOYDbVLBJvuc0ve0VL9x6B3OHF6eH52y9hCBtQ==}
+
   aproba@2.1.0:
     resolution: {integrity: sha512-tLIEcj5GuR2RSTnxNKdkK0dJ/GrC7P38sUkiDmDuHfsHmbagTFAxDVIBltoklXEVIQ/f14IL8IMJ5pn9Hez1Ew==}
 
@@ -1759,6 +1771,10 @@ packages:
   at-least-node@1.0.0:
     resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
     engines: {node: '>= 4.0.0'}
+
+  auto-launch@5.0.6:
+    resolution: {integrity: sha512-OgxiAm4q9EBf9EeXdPBiVNENaWE3jUZofwrhAkWjHDYGezu1k3FRZHU8V2FBxGuSJOHzKmTJEd0G7L7/0xDGFA==}
+    engines: {node: '>=4.0.0'}
 
   axios@1.11.0:
     resolution: {integrity: sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==}
@@ -4675,6 +4691,10 @@ packages:
     resolution: {integrity: sha512-6NCPkv1ClwH+/BGE9QeoTIl09nuiAt0gS28nn1PvYXsGKRwM2TCbFA2QiilmehPDTXIe684k4rZI1yl3A1PCUw==}
     engines: {node: '>=18.12.0'}
 
+  untildify@3.0.3:
+    resolution: {integrity: sha512-iSk/J8efr8uPT/Z4eSUywnqyrQU7DSdMfdqK4iWEaUVVmcP5JcnpRqmVMwcwcnmI1ATFNgC5V90u09tBynNFKA==}
+    engines: {node: '>=4'}
+
   update-browserslist-db@1.1.3:
     resolution: {integrity: sha512-UxhIZQ+QInVdunkDAaiazvvT/+fXL5Osr0JZlJulepYu6Jd7qJtDZjlur0emRlT71EN3ScPoE7gvsuIKKNavKw==}
     hasBin: true
@@ -4740,6 +4760,9 @@ packages:
 
   wide-align@1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
+
+  winreg@1.2.4:
+    resolution: {integrity: sha512-IHpzORub7kYlb8A43Iig3reOvlcBJGX9gZ0WycHhghHtA65X0LYnMRuJs+aH1abVnMJztQkvQNlltnbPi5aGIA==}
 
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
@@ -6355,6 +6378,8 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@types/auto-launch@5.0.5': {}
+
   '@types/cacheable-request@6.0.3':
     dependencies:
       '@types/http-cache-semantics': 4.0.4
@@ -6740,6 +6765,8 @@ snapshots:
       - bluebird
       - supports-color
 
+  applescript@1.0.0: {}
+
   aproba@2.1.0:
     optional: true
 
@@ -6770,6 +6797,14 @@ snapshots:
   asynckit@0.4.0: {}
 
   at-least-node@1.0.0: {}
+
+  auto-launch@5.0.6:
+    dependencies:
+      applescript: 1.0.0
+      mkdirp: 0.5.6
+      path-is-absolute: 1.0.1
+      untildify: 3.0.3
+      winreg: 1.2.4
 
   axios@1.11.0:
     dependencies:
@@ -10230,6 +10265,8 @@ snapshots:
       picomatch: 4.0.3
       webpack-virtual-modules: 0.6.2
 
+  untildify@3.0.3: {}
+
   update-browserslist-db@1.1.3(browserslist@4.25.4):
     dependencies:
       browserslist: 4.25.4
@@ -10296,6 +10333,8 @@ snapshots:
     dependencies:
       string-width: 4.2.3
     optional: true
+
+  winreg@1.2.4: {}
 
   word-wrap@1.2.5: {}
 

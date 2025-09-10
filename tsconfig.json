@@ -9,6 +9,7 @@
     "moduleResolution": "bundler",
     "paths": {
       "~/*": ["./src/renderer/src/*"],
+      "~/main/*": ["./src/main/*"],
       "~~/*": ["./*"]
     },
     "resolveJsonModule": true,

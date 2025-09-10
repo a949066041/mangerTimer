@@ -6,36 +6,25 @@ import knex from 'knex'
 
 export const TIMER_PLAN = 'timer_plan'
 export const TIMER_RECORD = 'timer_record'
-export interface TimerPlanModel {
-  id: number
-  name: string
-  file: string
-  timer: string
-  open: boolean
-  createTime: string
-  updateTime: string
-}
-
-export interface TimerRecord {
-  id: number
-  execTimer: string
-  parentId: TimerPlanModel['id']
-}
 
 export class LocalDB {
   declare db: Knex
+
+  constructor() {
+  }
+
   async init() {
+    const dbFilePath = join(app.getPath('userData'), 'timerManger.db')
     this.db = knex({
       client: 'sqlite',
       useNullAsDefault: true,
       connection: {
-        filename: join(app.getPath('userData'), 'timerManger.db'),
+        filename: dbFilePath,
       },
     })
     consola.success(
-      `db path create success:${join(app.getPath('userData'), 'timerManger.db')}`,
+      `db path create success:${dbFilePath}`,
     )
-    // 新建表
     await this.sync()
   }
 

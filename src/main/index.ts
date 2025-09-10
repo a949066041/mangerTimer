@@ -1,10 +1,8 @@
-import type { TimerService } from './db/db-service'
+import type AppContoller from './controller/index.controller'
 import { join } from 'node:path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
-import { timerService } from './db/db-service'
-
-import { timerSchedule } from './schedule'
+import { initContoller } from './controller/init'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -50,10 +48,10 @@ app.whenReady().then(async () => {
   })
 
   createWindow()
-  await timerService.init()
-  timerSchedule.initAllTimer()
-  ipcMain.handle('bridge', async (_event, method: keyof TimerService, params?: any) => {
-    return timerService[method](params) as Promise<unknown>
+  const appController = await initContoller()
+  await appController.resetTimer()
+  ipcMain.handle('bridge', async (_event, method: keyof AppContoller, params?: any) => {
+    return appController[method](params) as Promise<unknown>
   })
 
   app.on('activate', () => {

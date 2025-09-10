@@ -1,0 +1,52 @@
+name: build
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: build and release electron app
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build:${{ matrix.os }}
+
+      - name: Cleanup Artifacts for Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          npx rimraf "dist/!(*.exe)"
+      
+      - name: Cleanup Artifacts for MacOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          npx rimraf "dist/!(*.dmg)"
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: ${{ matrix.os }}
+          path: dist
+
+
+
+
+
+

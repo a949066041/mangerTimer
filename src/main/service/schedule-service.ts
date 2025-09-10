@@ -1,25 +1,30 @@
 import type { Job } from 'node-schedule'
-import type { TimerPlanModel } from '../db/db'
+import type { TimerPlanModel } from '../types'
+import type { RecordService } from './record-service'
 import consola from 'consola'
 import dayjs from 'dayjs'
 import schedule from 'node-schedule'
 import soundPlay from 'sound-play'
-import { timerService } from '../db/db-service'
 
-export class TimerSchedule {
+export class ScheduleService {
   protected schedule: Map<number, Job> = new Map()
+  protected timerList: TimerPlanModel[] = []
+  protected recordService: RecordService
 
-  constructor() {
+  constructor(
+    recordService: RecordService,
+  ) {
+    this.recordService = recordService
   }
 
   getSchedule() {
     return this.schedule
   }
 
-  async initAllTimer() {
+  async openTimer(timerList: TimerPlanModel[]) {
     this.cancelAll()
-    const timers = await timerService.getOpenData()
-    timers.forEach((timer) => {
+    this.timerList = timerList
+    timerList.forEach((timer) => {
       this.start(timer)
     })
   }
@@ -32,7 +37,7 @@ export class TimerSchedule {
     consola.success(`start timer ${timer.id}`, timer)
     const newJob = schedule.scheduleJob(timer.timer, () => {
       consola.info(`exec timer ${timer.id}`)
-      timerService.createRecord({
+      this.recordService.createRecord({
         execTimer: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         parentId: timer.id,
       })
@@ -57,5 +62,3 @@ export class TimerSchedule {
     this.schedule.clear()
   }
 }
-
-export const timerSchedule = new TimerSchedule()
