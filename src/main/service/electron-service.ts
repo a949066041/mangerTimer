@@ -1,6 +1,7 @@
-import { copyFileSync, existsSync, mkdirSync } from 'original-fs'
+import { copyFileSync, existsSync, mkdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { app, dialog } from 'electron'
-import { first, join } from 'lodash-es'
+import { first } from 'lodash-es'
 import { v4 } from 'uuid'
 
 export const TIMER_PLAN_DIR = 'timer-plan'
