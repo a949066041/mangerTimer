@@ -52,4 +52,17 @@ export default class AppContoller {
   async saveFile() {
     return await this.electronService.saveData()
   }
+
+  async getEnabled() {
+    const isEnabled = await this.electronService.getEnabled()
+    return isEnabled
+  }
+
+  async switchEnabled() {
+    return await this.electronService.switchEnabled()
+  }
+
+  async getSchedule() {
+    return await this.scheduleService.getCurrentSchedule()
+  }
 }

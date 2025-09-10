@@ -65,3 +65,21 @@ export function getRecord(id: number) {
     id,
   )
 }
+
+export function getEnabled() {
+  return ipcFetch<boolean>(
+    'getEnabled',
+  )
+}
+
+export function switchEnabled() {
+  return ipcFetch<boolean>(
+    'switchEnabled',
+  )
+}
+
+export function getSchedule() {
+  return ipcFetch<TimerPlanModel[]>(
+    'getSchedule',
+  )
+}

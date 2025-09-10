@@ -34,7 +34,7 @@ export function useTimerForm() {
       form.setFieldsValue(cloneDeep(row))
     }
     else {
-      form.setFieldsValue({})
+      form.resetFields()
     }
     setId(row?.id)
   }

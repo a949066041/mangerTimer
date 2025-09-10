@@ -13,15 +13,13 @@ export function setupAutoLaunch(enable: boolean = true): Promise<void> {
       name: app.getName(),
       path: process.execPath,
     })
-    autoLauncher.isEnabled().then(() => {
-      const switchAction = enable ? autoLauncher.enable : autoLauncher.disable
-      switchAction().then(() => {
-        consola.info(`已${enable ? '启用' : '禁用'}自启动`)
-        resolve()
-      }).catch((err) => {
-        consola.error(`操作自启动失败: ${err}`)
-        reject(err)
-      })
+    const switchAction = enable ? autoLauncher.enable : autoLauncher.disable
+    switchAction().then(() => {
+      consola.info(`已${enable ? '启用' : '禁用'}自启动`)
+      resolve()
+    }).catch((err) => {
+      consola.error(`操作自启动失败: ${err}`)
+      reject(err)
     })
   })
 }

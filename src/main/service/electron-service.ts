@@ -1,8 +1,10 @@
 import { copyFileSync, existsSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
+import AutoLaunch from 'auto-launch'
 import { app, dialog } from 'electron'
 import { first } from 'lodash-es'
 import { v4 } from 'uuid'
+import { setupAutoLaunch } from '../utils'
 
 export const TIMER_PLAN_DIR = 'timer-plan'
 
@@ -33,5 +35,18 @@ export class ElectronService {
     const newFlePath = join(savePath, `${newFileName}.${ext}`)
     await copyFileSync(filePath, newFlePath)
     return newFlePath
+  }
+
+  async getEnabled() {
+    const autoLauncher = new AutoLaunch({
+      name: app.getName(),
+      path: process.execPath,
+    })
+    return await autoLauncher.isEnabled()
+  }
+
+  async switchEnabled() {
+    const currentEnabled = await this.getEnabled()
+    return await setupAutoLaunch(!currentEnabled)
   }
 }

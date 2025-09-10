@@ -1,7 +1,7 @@
 import type AppContoller from './controller/index.controller'
-import { join } from 'node:path'
+import path, { join } from 'node:path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, Menu, shell, Tray } from 'electron'
 import { initContoller } from './controller/init'
 import { setupAutoLaunch } from './utils'
 
@@ -12,11 +12,43 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     title: '定时播报',
+    icon: path.join(__dirname, '../../resources/timer.png'),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
     },
   })
+
+  // 创建系统托盘
+  const tray = new Tray(path.join(__dirname, '../../resources/timer.png'))
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: '显示窗口',
+      click: () => {
+        mainWindow.show()
+      },
+    },
+    {
+      label: '退出',
+      click: () => {
+        app.quit()
+      },
+    },
+  ])
+
+  tray.setToolTip('定时播报')
+  tray.setContextMenu(contextMenu)
+
+  // 点击托盘图标切换窗口显示/隐藏
+  tray.on('click', () => {
+    if (mainWindow.isVisible()) {
+      mainWindow.hide()
+    }
+    else {
+      mainWindow.show()
+    }
+  })
+
   mainWindow.on('ready-to-show', () => {
     mainWindow.title = '定时播报'
     mainWindow.show()
@@ -51,6 +83,10 @@ app.whenReady().then(async () => {
   createWindow()
   const appController = await initContoller()
   await appController.resetTimer()
+  const isEnabled = await appController.getEnabled()
+  if (isEnabled) {
+    setupAutoLaunch(true)
+  }
   ipcMain.handle('bridge', async (_event, method: keyof AppContoller, params?: any) => {
     return appController[method](params) as Promise<unknown>
   })
@@ -60,8 +96,6 @@ app.whenReady().then(async () => {
       createWindow()
   })
 })
-
-setupAutoLaunch(true)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -21,6 +21,10 @@ export class ScheduleService {
     return this.schedule
   }
 
+  getCurrentSchedule() {
+    return this.timerList
+  }
+
   async openTimer(timerList: TimerPlanModel[]) {
     this.cancelAll()
     this.timerList = timerList
