@@ -27,7 +27,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build
-        run: pnpm build:${{ matrix.os }}
+        run: |
+          pnpm build:${{ matrix.os }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cleanup Artifacts for Windows
         if: matrix.os == 'windows-latest'
