@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { initContoller } from './controller/init'
+import { setupAutoLaunch } from './utils'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -59,6 +60,8 @@ app.whenReady().then(async () => {
       createWindow()
   })
 })
+
+setupAutoLaunch(true)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
