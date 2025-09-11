@@ -28,29 +28,44 @@ export class LocalDB {
     await this.sync()
   }
 
-  async sync() {
-    await this.db.schema.hasTable(TIMER_PLAN).then((exist) => {
-      if (exist)
-        return
-      return this.db.schema.createTable(TIMER_PLAN, (table) => {
-        table.bigIncrements('id', { primaryKey: true })
-        table.string('name')
-        table.string('file')
-        table.string('timer')
-        table.boolean('open')
-        table.string('createTime')
-        table.string('updateTime')
-      })
+  async syncTimerPlan() {
+    const isExist = await this.db.schema.hasTable(TIMER_PLAN)
+    if (isExist) {
+      const execNum = await this.db.schema.hasColumn(TIMER_PLAN, 'execNum')
+      if (!execNum) {
+        await this.db.schema.alterTable(TIMER_PLAN, (table) => {
+          table.integer('execNum').defaultTo(1)
+        })
+      }
+      return
+    }
+    await this.db.schema.createTable(TIMER_PLAN, (table) => {
+      table.bigIncrements('id', { primaryKey: true })
+      table.string('name')
+      table.string('file')
+      table.string('timer')
+      table.boolean('open')
+      table.integer('execNum').defaultTo(1)
+      table.string('createTime')
+      table.string('updateTime')
     })
+  }
 
-    await this.db.schema.hasTable(TIMER_RECORD).then((exist) => {
-      if (exist)
-        return
-      return this.db.schema.createTable(TIMER_RECORD, (table) => {
-        table.bigIncrements('id', { primaryKey: true })
-        table.string('execTimer')
-        table.bigInteger('parentId')
-      })
+  async syncTimerRecord() {
+    const isExist = await this.db.schema.hasTable(TIMER_RECORD)
+    if (isExist) {
+      return
+    }
+    await this.db.schema.createTable(TIMER_RECORD, (table) => {
+      table.bigIncrements('id', { primaryKey: true })
+      table.string('execTimer')
+      table.bigInteger('parentId')
     })
+  }
+
+  async sync() {
+    await this.syncTimerPlan()
+
+    await this.syncTimerRecord()
   }
 }

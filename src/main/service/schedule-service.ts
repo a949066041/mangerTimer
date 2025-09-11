@@ -5,6 +5,7 @@ import consola from 'consola'
 import dayjs from 'dayjs'
 import schedule from 'node-schedule'
 import soundPlay from 'sound-play'
+import { promiseExec } from '../utils'
 
 export class ScheduleService {
   protected schedule: Map<number, Job> = new Map()
@@ -45,7 +46,7 @@ export class ScheduleService {
         execTimer: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         parentId: timer.id,
       })
-      soundPlay.play(timer.file)
+      promiseExec(() => soundPlay.play(timer.file), timer.execNum)
     })
     this.schedule.set(timer.id, newJob)
   }
