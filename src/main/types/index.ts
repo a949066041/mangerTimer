@@ -4,6 +4,7 @@ export interface TimerPlanModel {
   file: string
   timer: string
   open: boolean
+  execNum: number
   createTime: string
   updateTime: string
 }

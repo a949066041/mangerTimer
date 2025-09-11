@@ -1,6 +1,6 @@
 import type { TableProps } from 'antd'
 import type { TimerPlanModel, TimerRecord } from '~/main/types'
-import { Button, Form, Input, Modal, Space, Switch, Table } from 'antd'
+import { Button, Form, Input, InputNumber, Modal, Space, Switch, Table } from 'antd'
 import { useMemo } from 'react'
 import { Cron } from 'react-js-cron'
 import { DEFAULT_LOCALE_ZH } from '~/assets/cron.locale'
@@ -19,19 +19,27 @@ export function TimerComponents() {
       title: '名称',
       dataIndex: 'name',
       key: 'name',
-      width: 200,
+      width: 130,
     },
     {
       title: '文件路径',
       dataIndex: 'file',
-      width: 200,
+      ellipsis: true,
+      textWrap: 'break-word',
+      width: 150,
       key: 'file',
+    },
+    {
+      title: '执行次数',
+      dataIndex: 'execNum',
+      key: 'execNum',
+      width: 120,
     },
     {
       title: '定时器',
       dataIndex: 'timer',
       key: 'timer',
-      width: 200,
+      width: 160,
     },
     {
       title: '状态',
@@ -99,13 +107,14 @@ export function TimerComponents() {
         </Button>
         <AppConfig />
       </Space>
-      <Table<TimerPlanModel> scroll={{ x: 'max-content' }} rowKey="id" pagination={false} columns={columns} loading={loadingTable} dataSource={data} />
+      <Table<TimerPlanModel> scroll={{ x: '100vw' }} rowKey="id" pagination={false} columns={columns} loading={loadingTable} dataSource={data} />
 
       <Modal width={800} centered title="定时器" open={isOpen} onOk={handleSaveForm} confirmLoading={isPending} onCancel={handleCloseDialog}>
         <Form
           form={form}
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 20 }}
+          initialValues={{ execNum: 1 }}
           style={{ maxWidth: 600 }}
         >
           <Form.Item label="名称" name="name" rules={[{ required: true, message: '请输入名称' }]}>
@@ -119,6 +128,9 @@ export function TimerComponents() {
           </Form.Item>
           <Form.Item label="定时器" name="timer" rules={[{ required: true, message: '请输入定时器' }]}>
             <Cron locale={DEFAULT_LOCALE_ZH} value={form.getFieldValue('timer')} setValue={(val: any) => form.setFieldValue('timer', val)} />
+          </Form.Item>
+          <Form.Item label="执行次数" name="execNum" rules={[{ required: true, message: '请输入执行次数' }]}>
+            <InputNumber min={1} />
           </Form.Item>
           <Form.Item label="状态" name="open">
             <Switch />
